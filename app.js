@@ -20,6 +20,9 @@ const markupCol = `
 
 let numBoxes = 16;
 const renderBoxes = () => {
+  let height = `${100 / numBoxes}%`;
+  let width = `${100 / numBoxes}%`;
+
   for (let i = 0; i < numBoxes; i++) {
     dom.container.insertAdjacentHTML('beforeend', markupRow);
   }
@@ -28,9 +31,15 @@ const renderBoxes = () => {
 
   for (let i = 0; i < numBoxes; i++) {
     rowArr.forEach((row) => {
+      row.style.height = height;
       row.insertAdjacentHTML('beforeend', markupCol);
     });
   }
+
+  let colArr = Array.from(document.querySelectorAll('.box-col'));
+  colArr.forEach((col) => {
+    col.style.width = width;
+  });
 };
 
 window.addEventListener('load', () => {
@@ -39,13 +48,18 @@ window.addEventListener('load', () => {
 
 dom.form.addEventListener('submit', () => {
   numBoxes = dom.input.value;
-  console.log(numBoxes);
+  dom.input.value = '';
 
   if (numBoxes) {
     dom.container.textContent = '';
     renderBoxes();
   } else {
+    dom.container.textContent = '';
     numBoxes = 16;
     renderBoxes();
   }
+});
+
+document.querySelector('.container').addEventListener('mouseover', (e) => {
+  e.target.classList.add('active');
 });
